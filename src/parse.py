@@ -16,7 +16,7 @@ def chunks(l, n):
 
 def genearte_genomes(genome='ATCGATATACCA', k=3):
     sentences=[]
-    for index in range( 0, 1 ):
+    for index in range( 0, k ):
         _sentences = split_genome(genome=genome[index:], k=k)
         sentences += chunks(_sentences, 20)
     return sentences
