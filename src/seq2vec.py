@@ -40,14 +40,14 @@ def main(input_file, model_file, kmer, output_file, embedding_size):
 
         if _first:
             data_yn[0] = y_i
-            index_yn[0] = record.id
+            index_yn[0] = record.id.encode('utf8')
             _first = False
         else:
             data_index = data_yn.shape[0] + 1
             data_yn.resize(data_index, axis=0)
             data_yn[-1] = y_i
             index_yn.resize(data_index, axis=0)
-            index_yn[-1] = record.id
+            index_yn[-1] = record.id.encode('utf8')
 
     print('there are a total of '+str(len(data_yn))+' reads in the input file.')
 
