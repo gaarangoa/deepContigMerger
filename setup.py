@@ -6,11 +6,13 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click==6.7',
+        'Click',
+        'gensim',
+        'BioPython'
     ],
     entry_points='''
         [console_scripts]
-        deepMerge=embeddings.main:process
-        deepMerge_embeddings=embeddings.main:process
+        dmerge=deepMerge.main:process
+        dmerge_embeddings=deepMerge.main:process
     ''',
 )

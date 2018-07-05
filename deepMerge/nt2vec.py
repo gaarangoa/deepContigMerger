@@ -1,4 +1,4 @@
-import parse
+import deepMerge.parse
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import os
 from tqdm import tqdm
