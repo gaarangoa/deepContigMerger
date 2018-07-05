@@ -1,4 +1,4 @@
-import deepMerge.nt2vec
+from deepMerge import nt2vec
 import click
 
 
