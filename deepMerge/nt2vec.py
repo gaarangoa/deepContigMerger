@@ -40,7 +40,7 @@ def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, mod
                         min_alpha=0.025,
                         min_count=1,
                         dm=1,
-                        iter=10)
+                        epochs=max_epochs)
         model.build_vocab(it)
     #
 
@@ -50,7 +50,7 @@ def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, mod
         model.train(
             it,
             total_examples=model.corpus_count,
-            epochs=model.iter
+            epochs=model.epochs
         )
         # decrease the learning rate
         model.alpha -= 0.0002
