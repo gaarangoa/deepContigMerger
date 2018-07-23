@@ -30,7 +30,6 @@ def main(input_file, kmer, output_file):
     records = []
     for record in SeqIO.parse(input_file, 'fasta'):
         records += genearte_genomes(genome=str(record.seq).upper(), k=kmer)
-        break
 
     fo = open(output_file, 'a')
 

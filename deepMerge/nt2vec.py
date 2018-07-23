@@ -19,8 +19,13 @@ class LabeledFastaGenome(object):
 
 
 def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model"):
-    it = LabeledFastaGenome(doc_list=genome_list, kmer=kmer)
-    #
+
+    # iterator class
+    it = LabeledFastaGenome(
+        doc_list=genome_list,
+        kmer=kmer
+    )
+
     # check if the model exists
     if os.path.isfile(model_filename):
         print('Model exists, it will retrain the model with the new entries!')

@@ -12,7 +12,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        dmerge=deepMerge.main:process
-        dmerge_embeddings=deepMerge.main:process
+        deepMerge=deepMerge.entry:cli
     ''',
 )

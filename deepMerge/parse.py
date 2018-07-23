@@ -15,7 +15,7 @@ def genearte_genomes(genome='ATCGATATACCA', k=3, words=50):
     sentences=[]
     for index in range( 0, k ):
         sentences += split_genome(genome=genome[index:], k=k)
-        # sentences += chunks(_sentences, words)
+        # sentences += chunks(_sentences, words) # in this case I don't need to split the genomes in small sections
     return sentences
 
 def genome_to_doc(input_file="", kmer=16):
