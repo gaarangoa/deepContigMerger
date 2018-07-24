@@ -7,9 +7,10 @@ import click
 @click.option('--output-file', default='', help='output file to write the model')
 # @click.option('--training-chunk', default=1000, help='Number of genomes used to train the model iteratively (default 1000).')
 @click.option('--kmer-size', default=31, help='Decompose the genomes into k length mers (31 default)')
+@click.option('--proc', default=8, help="number of processors to use")
 # @click.option('--embedding-size', default=100, help='Length of embedding vector size (100 default)')
 # @click.option('--epochs', default=10, help='Number of training epochs (10 default)')
-def index(input_file, output_file, kmer_size):
+def index(input_file, output_file, kmer_size, proc):
     '''
         Transform sequences to kmers.
 
@@ -22,7 +23,8 @@ def index(input_file, output_file, kmer_size):
     nt2kmer = NToKmer(
         genome_list=input_file,
         model_filename=output_file,
-        kmer=kmer_size
+        kmer=kmer_size,
+        proc=proc
     )
 
     nt2kmer.index()
