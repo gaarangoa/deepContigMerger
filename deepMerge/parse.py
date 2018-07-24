@@ -73,3 +73,5 @@ def store_genome_h5(records=[], f5=''):
                 dataset[-1] = i
                 labels.resize(labels.shape[0]+1, axis=0)
                 labels[-1] = record['label']
+
+
