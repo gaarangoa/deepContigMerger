@@ -25,6 +25,7 @@ def train(input_file, output_file, training_chunk, kmer_size, embedding_size, ep
         print('\nUsage: No input file, type --help\n')
         exit()
 
+
     nt2vec.build(
         genome_list=input_file,
         model_filename=output_file,

@@ -1,8 +1,6 @@
 from deepMerge import parse
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import os
-from tqdm import tqdm
-
 
 class LabeledFastaGenome(object):
     def __init__(self, doc_list='', kmer=15):
@@ -16,7 +14,6 @@ class LabeledFastaGenome(object):
             # print(label)
             words = parse.genome_to_doc(input_file=fasta_file, kmer=self.k)
             yield TaggedDocument(words=words, tags=[label])
-
 
 def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model"):
 

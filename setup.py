@@ -8,7 +8,9 @@ setup(
     install_requires=[
         'Click',
         'gensim',
-        'BioPython'
+        'BioPython',
+        'h5py',
+        'tqdm'
     ],
     entry_points='''
         [console_scripts]
