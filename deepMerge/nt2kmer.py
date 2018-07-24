@@ -25,7 +25,7 @@ class NToKmer():
         _input_file = open(self.genome_list, 'r')
 
         pool = Pool(processes=self.proc)
-        for genome in pool.imap(self.parse_input, _input_file, chunksize=self.proc):
+        for genome in pool.imap_unordered(self.parse_input, _input_file, chunksize=self.proc):
             parse.store_genome_h5(records=genome, f5=f5)
 
         pool.close()
