@@ -60,8 +60,8 @@ def store_genome_h5(records=[], f5=''):
             dataset = group.create_dataset('sequences', (1, _kmer_count), dtype=dt, chunks=(1, _kmer_count), maxshape=(None, _kmer_count))
             labels = group.create_dataset('labels', (1, ), dtype=dt, chunks=(1, ), maxshape=(None, ))
         except:
-            dataset = f5[record.id]['sequences']
-            labels = f5[record.id]['labels']
+            dataset = f5[record['id']]['sequences']
+            labels = f5[record['id']]['labels']
 
         for ix, i in enumerate( record['sentences'] ):
 
