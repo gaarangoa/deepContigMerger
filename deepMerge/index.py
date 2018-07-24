@@ -1,5 +1,5 @@
 from deepMerge import nt2vec
-from deepMerge import nt2kmer
+from deepMerge.nt2kmer import NToKmer
 import click
 
 @click.command()
@@ -19,16 +19,10 @@ def index(input_file, output_file, kmer_size):
         print('\nUsage: No input file, type --help\n')
         exit()
 
-    nt2kmer.index(
+    nt2kmer = NToKmer(
         genome_list=input_file,
         model_filename=output_file,
         kmer=kmer_size
     )
 
-    # nt2vec.build(
-    #     genome_list=input_file,
-    #     model_filename=output_file,
-    #     max_epochs=epochs,
-    #     kmer=kmer_size,
-    #     vec_size=embedding_size,
-    # )
+    nt2kmer.index()

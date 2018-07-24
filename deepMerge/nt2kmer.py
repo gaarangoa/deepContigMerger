@@ -1,24 +1,30 @@
 from tqdm import tqdm
 from deepMerge import parse
+from multiprocessing import Pool
+import h5py
+from functools import partial
 
+class NToKmer():
+    def __init__(self, genome_list="", kmer=31, model_filename=""):
+        self.genome_list = genome_list
+        self.kmer = kmer
+        self.model_filename = model_filename
 
-class IndexGenome(object):
-    def __init__(self, doc_list='', kmer=15, model_file=""):
-        self.doc_list = doc_list
-        self.k = kmer
-        self.index_file = model_file+".h5"
-    #
+    def parse_input(self, line):
+        fasta_file, label = line.split()
+        genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
 
-    def __iter__(self):
-        for doc in open(self.doc_list):
-            fasta_file, label = doc.split()
-            # print(label)
-            words = parse.genome_to_doc(input_file=fasta_file, kmer=self.k, label=label, index_file=self.index_file)
-            yield dict(words=words, tags=[label])
+        return genomes
 
+    def index(self):
 
-def index(genome_list='', model_filename='', kmer=31):
-    ''' Split sequences into consecutive kmers and store it as hdf5 objects.'''
-    index_genome = IndexGenome(doc_list=genome_list, kmer=kmer, model_file=model_filename)
-    for i in index_genome:
-        assert(1)
+        ''' Split sequences into consecutive kmers and store it as hdf5 objects.'''
+
+        f5 = h5py.File(self.model_filename + '.h5', 'a')
+        _input_file = open(self.genome_list, 'r')
+
+        pool = Pool(processes=2)
+        for genome in pool.imap(self.parse_input, _input_file, chunksize=2):
+            parse.store_genome_h5(records=genome, f5=f5)
+
+        pool.close()
