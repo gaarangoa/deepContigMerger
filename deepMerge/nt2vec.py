@@ -70,7 +70,7 @@ def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filena
         model.min_alpha = model.alpha
     #
 
-    print('total docs learned %s' % (len(model.docvecs)))
+    print('total kmers %s' % (len(model.wv.vocab.items())))
 
     model.save(model_filename)
     print("Model Saved")
