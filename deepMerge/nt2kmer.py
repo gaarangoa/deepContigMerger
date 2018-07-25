@@ -14,11 +14,14 @@ class NToKmer():
         self.batch = batch
 
     def parse_input(self, line):
-        fasta_file, label = line.split()
-        f5 = h5py.File(self.output_dir+'/'+fasta_file.split('/')[-1] + '.h5', 'a')
+        try:
+            fasta_file, label = line.split()
+            f5 = h5py.File(self.output_dir+'/'+fasta_file.split('/')[-1] + '.h5', 'a')
 
-        genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
-        parse.store_genome_h5(records=genomes, f5=f5)
+            genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
+            parse.store_genome_h5(records=genomes, f5=f5)
+        except:
+            print('error in: ' + fasta_file)
 
         return True
 
