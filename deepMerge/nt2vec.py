@@ -1,27 +1,40 @@
 from deepMerge import parse
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 import os
+import h5py
+from tqdm import tqdm
 
 class LabeledFastaGenome(object):
-    def __init__(self, doc_list='', kmer=15):
+    def __init__(self, doc_list='', doc_dir=''):
         self.doc_list = doc_list
-        self.k = kmer
+        self.doc_dir = doc_dir
     #
 
     def __iter__(self):
-        for doc in open(self.doc_list):
-            fasta_file, label = doc.split()
-            # print(label)
-            words = parse.genome_to_doc(input_file=fasta_file, kmer=self.k)
-            yield TaggedDocument(words=words, tags=[label])
+        for doc in self.doc_list:
 
-def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model"):
+            f5 = h5py.File(self.doc_dir + '/' + doc)
+
+            fasta_header = [i for i in f5.keys()][0]
+            words = f5[fasta_header]['sequences']
+            labels = f5[fasta_header]['labels']
+
+            for ix, i in enumerate(words):
+                yield TaggedDocument(words=i, tags=[labels[ix]])
+
+def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model", cores=1):
+    '''
+
+    genome_list is a list where each entry corresponds to an *.h5 file.
+
+    '''
 
     # iterator class
     it = LabeledFastaGenome(
-        doc_list=genome_list,
-        kmer=kmer
+        doc_list=genome_list['doc_list'],
+        doc_dir=genome_list['doc_dir'],
     )
+
 
     # check if the model exists
     if os.path.isfile(model_filename):
@@ -37,7 +50,9 @@ def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, mod
                         min_alpha=0.025,
                         min_count=1,
                         dm=1,
-                        epochs=max_epochs)
+                        epochs=max_epochs,
+                        cores=cores
+        )
         model.build_vocab(it)
     #
 
@@ -54,6 +69,8 @@ def build(genome_list="", kmer=15, max_epochs=10, vec_size=300, alpha=0.025, mod
         # fix the learning rate, no decay
         model.min_alpha = model.alpha
     #
+
+    print('total docs learned %s' % (len(model.docvecs)))
 
     model.save(model_filename)
     print("Model Saved")
