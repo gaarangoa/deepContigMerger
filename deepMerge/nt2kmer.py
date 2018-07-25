@@ -3,29 +3,34 @@ from deepMerge import parse
 from multiprocessing import Pool
 import h5py
 from functools import partial
+import time
 
 class NToKmer():
-    def __init__(self, genome_list="", kmer=31, model_filename="", proc=8):
+    def __init__(self, genome_list="", kmer=31, output_dir="", proc=8, batch=10):
         self.genome_list = genome_list
         self.kmer = kmer
-        self.model_filename = model_filename
+        self.output_dir = output_dir
         self.proc = proc
+        self.batch = batch
 
     def parse_input(self, line):
         fasta_file, label = line.split()
-        genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
+        f5 = h5py.File(self.output_dir+'/'+label + '.h5', 'a')
 
-        return genomes
+        genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
+        parse.store_genome_h5(records=genomes, f5=f5)
+
+        return True
+
 
     def index(self):
 
         ''' Split sequences into consecutive kmers and store it as hdf5 objects.'''
 
-        f5 = h5py.File(self.model_filename + '.h5', 'a')
         _input_file = open(self.genome_list, 'r')
 
         pool = Pool(processes=self.proc)
-        for genome in pool.imap_unordered(self.parse_input, _input_file, chunksize=self.proc):
-            parse.store_genome_h5(records=genome, f5=f5)
+        for i in pool.imap_unordered(self.parse_input, _input_file, chunksize=self.batch):
+            assert(i)
 
         pool.close()

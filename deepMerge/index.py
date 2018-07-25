@@ -1,17 +1,18 @@
 from deepMerge import nt2vec
 from deepMerge.nt2kmer import NToKmer
 import click
+import os
 
 @click.command()
 @click.option('--input-file', default='', help='tabular file where the first field is the fasta file and the second field the label of the fasta file')
-@click.option('--output-file', default='', help='output file to write the model')
+@click.option('--output-dir', default='', help='output directory to write the h5 files')
 # @click.option('--training-chunk', default=1000, help='Number of genomes used to train the model iteratively (default 1000).')
 @click.option('--kmer-size', default=31, help='Decompose the genomes into k length mers (31 default)')
 @click.option('--proc', default=8, help="number of processors to use (default: 8)")
 @click.option('--batch', default=100, help="number of genomes processed by each processor (default: 100)")
 # @click.option('--embedding-size', default=100, help='Length of embedding vector size (100 default)')
 # @click.option('--epochs', default=10, help='Number of training epochs (10 default)')
-def index(input_file, output_file, kmer_size, proc, batch):
+def index(input_file, output_dir, kmer_size, proc, batch):
     '''
         Transform sequences to kmers.
 
@@ -21,11 +22,15 @@ def index(input_file, output_file, kmer_size, proc, batch):
         print('\nUsage: No input file, type --help\n')
         exit()
 
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
     nt2kmer = NToKmer(
         genome_list=input_file,
-        model_filename=output_file,
+        output_dir=output_dir,
         kmer=kmer_size,
-        proc=proc
+        proc=proc,
+        batch=batch
     )
 
     nt2kmer.index()
