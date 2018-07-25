@@ -38,7 +38,8 @@ def train(input_dir, output_file, training_chunk, embedding_size, epochs, cores)
 
 
     for ix, _genome_chunk in enumerate(_genomes_list):
-        print( "processing chunk ", ix )
+        print("processing chunk ", ix)
+        print('number of genomes in chunk: ', len(_genome_chunk))
 
         _genomes_subset = {
             'doc_list': _genome_chunk,
