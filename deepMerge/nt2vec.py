@@ -25,6 +25,7 @@ class LabeledFastaGenome(object):
                     yield TaggedDocument(words=i, tags=[labels[ix]])
                 except:
                     print('Error in: ', doc)
+                    yield TaggedDocument(words=['THIS', 'IS', 'IT'], tags=['DUMMY'])
 
 def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model", cores=1):
     '''
