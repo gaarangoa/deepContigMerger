@@ -19,7 +19,7 @@ class LabeledFastaGenome(object):
                 words = f5[fasta_header]['sequences']
                 labels = f5[fasta_header]['labels']
 
-                print('Input: ', doc)
+                # print('Input: ', doc)
 
                 for ix, i in enumerate(words):
                     try:
