@@ -28,6 +28,13 @@ def genearte_genomes(genome='ATCGATATACCA', k=3, words=50):
 
     return np.array(sentences)
 
+def genearte_one_genome(genome='ATCGATATACCA', k=3):
+
+    _genome = genome
+    _sentence = split_genome(genome=_genome, k=k)
+
+    return np.array(_sentence, dtype="U")
+
 def genome_to_doc(input_file="", kmer=16, label="", f5=""):
 
     ''' This function transforms a sequence genome to a document of kmers '''

@@ -14,6 +14,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        deepMerge=deepMerge.entry:cli
+        nuc2vec=deepMerge.entry:cli
     ''',
 )

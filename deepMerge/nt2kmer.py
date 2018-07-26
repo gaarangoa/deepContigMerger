@@ -20,6 +20,7 @@ class NToKmer():
 
             genomes = parse.genome_to_doc(input_file=fasta_file, kmer=self.kmer, label=label)
             parse.store_genome_h5(records=genomes, f5=f5)
+
         except:
             print('error in: ' + fasta_file)
 

@@ -20,6 +20,7 @@ class LabeledFastaGenome(object):
             labels = f5[fasta_header]['labels']
 
             for ix, i in enumerate(words):
+                print(i.shape)
                 yield TaggedDocument(words=i, tags=[labels[ix]])
 
 def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model", cores=1):

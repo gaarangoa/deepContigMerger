@@ -10,11 +10,11 @@ def cli():
         DeepMerge builds word vector representations for genomic sequences (nucleotides). It consists of two main
         executable files:
 
-            deepMerge index: to split sequences as kmers.
+            nuc2vec index: to split sequences as kmers.
 
-            deepMerge train: to build the word vector representation.
+            nuc2vec train: to build the word vector representation.
 
-            deepMerge quant: to represent a sequence into its word vectors.
+            nuc2vec quant: to represent a sequence into its word vectors.
 
     '''
     pass
