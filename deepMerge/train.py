@@ -12,7 +12,9 @@ from deepMerge.parse import chunks
 @click.option('--embedding-size', default=100, help='Length of embedding vector size (100 default)')
 @click.option('--epochs', default=10, help='Number of training epochs (10 default)')
 @click.option('--cores', help='Number of training epochs')
-def train(input_dir, output_file, training_chunk, embedding_size, epochs, cores):
+@click.option('--minp', help='minimum position training')
+@click.option('--maxp', help='maximum position in training vector')
+def train(input_dir, output_file, training_chunk, embedding_size, epochs, cores, minp, maxp):
 
     '''
         Train a word vector model.

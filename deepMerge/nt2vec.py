@@ -19,6 +19,8 @@ class LabeledFastaGenome(object):
                 words = f5[fasta_header]['sequences']
                 labels = f5[fasta_header]['labels']
 
+                print('Input: ', doc)
+
                 for ix, i in enumerate(words):
                     try:
                         # print('Entry: ', doc, i.shape)
@@ -83,3 +85,5 @@ def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filena
 
     model.save(model_filename)
     print("Model Saved")
+
+    del model
