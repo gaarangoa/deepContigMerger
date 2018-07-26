@@ -12,20 +12,20 @@ class LabeledFastaGenome(object):
 
     def __iter__(self):
         for doc in self.doc_list:
+            try:
+                f5 = h5py.File(self.doc_dir + '/' + doc, 'r')
 
-            f5 = h5py.File(self.doc_dir + '/' + doc)
+                fasta_header = [i for i in f5.keys()][0]
+                words = f5[fasta_header]['sequences']
+                labels = f5[fasta_header]['labels']
 
-            fasta_header = [i for i in f5.keys()][0]
-            words = f5[fasta_header]['sequences']
-            labels = f5[fasta_header]['labels']
-
-            for ix, i in enumerate(words):
-                try:
-                    assert (i.shape)
+                print('Entry: ', doc)
+                for ix, i in enumerate(words):
                     yield TaggedDocument(words=i, tags=[labels[ix]])
-                except:
-                    print('Error in: ', doc)
-                    yield TaggedDocument(words=['THIS', 'IS', 'IT'], tags=['DUMMY'])
+
+            except Exception as e:
+                print('Error in: ', doc)
+                yield TaggedDocument(words=['THIS', 'IS', 'IT'], tags=['DUMMY'])
 
 def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filename="./genome.model", cores=1):
     '''
