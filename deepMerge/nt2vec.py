@@ -19,9 +19,13 @@ class LabeledFastaGenome(object):
                 words = f5[fasta_header]['sequences']
                 labels = f5[fasta_header]['labels']
 
-                print('Entry: ', doc)
                 for ix, i in enumerate(words):
-                    yield TaggedDocument(words=i, tags=[labels[ix]])
+                    try:
+                        print('Entry: ', doc, i.shape)
+                        yield TaggedDocument(words=i, tags=[labels[ix]])
+                    except Exception as e:
+                        print('Error in: ', doc)
+                        yield TaggedDocument(words=['THIS', 'IS', 'IT'], tags=['DUMMY'])
 
             except Exception as e:
                 print('Error in: ', doc)
