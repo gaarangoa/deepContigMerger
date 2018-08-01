@@ -4,7 +4,8 @@ import os
 import h5py
 from tqdm import tqdm
 from Bio import SeqIO
-from multiprocessing import Pool
+# from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool
 import numpy as np
 import time
 
@@ -44,9 +45,9 @@ class Quant():
         matrix = np.array(matrix)
         index = np.array(index)
 
-        # f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
-        # f5.create_dataset('vector', data=matrix)
-        # f5.create_dataset('index', data=index)
+        f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
+        f5.create_dataset('vector', data=matrix)
+        f5.create_dataset('index', data=index)
 
         return True
 
@@ -59,9 +60,8 @@ class Quant():
 
         print('processing input file ...')
 
-        x = [self.genome_to_doc(i) for i in fasta_file]
-
-        # pool = Pool(processes=self.proc)
+        pool = ThreadPool(processes=self.proc)
+        result = pool.map(self.genome_to_doc, fasta_file)
 
         # for i in pool.imap_unordered(self.genome_to_doc, fasta_file, chunksize=self.chunk):
         #     assert(i)
