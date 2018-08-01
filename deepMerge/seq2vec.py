@@ -29,14 +29,18 @@ class Quant():
         return data
 
     def genome_to_doc(self, record):
-        _genome = str(record.seq).upper()
-        sentence = parse.genearte_one_genome(genome=_genome, k=self.kmer)
-        matrix = np.array(self.fetch_wv(sentence))
 
-        print(matrix.shape)
+        matrix = []
+        for i in range(0, len(record.seq)-self.kmer, self.kmer):
+            _fragment = record.seq[i:i + self.kmer].upper()
+            try:
+                matrix.append(self.model.wv[_fragment])
+            except:
+                pass
 
-        f5 = h5py.File(self.output_dir + '/' + record.id +
-                       '-' + str(int(time.time())) + '.h5')
+        matrix = np.array(matrix)
+
+        f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
         f5.create_dataset(record.id, data=matrix)
 
         return True
@@ -49,9 +53,12 @@ class Quant():
         self.model = Doc2Vec.load(self.model_file)
 
         print('processing input file ...')
-        pool = Pool(processes=self.proc)
 
-        for i in pool.imap_unordered(self.genome_to_doc, fasta_file, chunksize=self.chunk):
-            assert(i)
+        x = [self.genome_to_doc(i) for i in fasta_file]
 
-        pool.close()
+        # pool = Pool(processes=self.proc)
+
+        # for i in pool.imap_unordered(self.genome_to_doc, fasta_file, chunksize=self.chunk):
+        #     assert(i)
+
+        # pool.close()
