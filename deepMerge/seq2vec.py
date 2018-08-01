@@ -37,7 +37,7 @@ class Quant():
 
             try:
                 index.append(i)
-                matrix += self.model.wv[_fragment]
+                matrix.append(self.model.wv[_fragment])
             except Exception as e:
                 pass
 
