@@ -8,6 +8,7 @@ from multiprocessing import Pool
 import numpy as np
 import time
 
+
 class Quant():
     def __init__(self, input_file='', model_file='', output_dir='', compress='', kmer=31, proc=1, chunk=10):
         self.input_file = input_file
@@ -18,17 +19,23 @@ class Quant():
         self.proc = proc
         self.chunk = chunk
 
+    def fetch_wv(self, sentence):
+        for i in sentence:
+            try:
+                yield self.model.wv[i]
+            except Exception as e:
+                pass
 
     def genome_to_doc(self, record):
         _genome = str(record.seq).upper()
         sentence = parse.genearte_one_genome(genome=_genome, k=self.kmer)
-        matrix = np.array([self.model.infer_vector(i) for i in sentence])
+        matrix = np.array([i for i in self.fetch_wv(sentence)])
 
-        f5 = h5py.File(self.output_dir + '/' + record.id + '-' + str(int(time.time())) + '.h5')
-        f5.create_dataset(record.id, data = matrix)
+        f5 = h5py.File(self.output_dir + '/' + record.id +
+                       '-' + str(int(time.time())) + '.h5')
+        f5.create_dataset(record.id, data=matrix)
 
         return True
-
 
     def index(self):
 
@@ -44,4 +51,3 @@ class Quant():
             assert(i)
 
         pool.close()
-

@@ -60,11 +60,11 @@ def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filena
                         alpha=alpha,
                         min_alpha=0.025,
                         min_count=5,
-                        dm=0,
+                        dm=1,
                         epochs=max_epochs,
                         cores=cores,
-                        hs=0,
-                        negative=10
+                        # hs=0,
+                        # negative=10
         )
         model.build_vocab(it)
     #
