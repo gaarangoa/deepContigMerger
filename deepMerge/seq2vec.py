@@ -44,9 +44,9 @@ class Quant():
         matrix = np.array(matrix)
         index = np.array(index)
 
-        f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
-        f5.create_dataset('vector', data=matrix)
-        f5.create_dataset('index', data=index)
+        # f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
+        # f5.create_dataset('vector', data=matrix)
+        # f5.create_dataset('index', data=index)
 
         return True
 
