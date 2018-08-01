@@ -31,19 +31,22 @@ class Quant():
     def genome_to_doc(self, record):
 
         matrix = []
+        index = []
         for i in range(0, len(record.seq)-self.kmer, self.kmer):
             _fragment = [record.seq[i:i + self.kmer].upper()]
 
             try:
-                # matrix += self.model.wv[_fragment]
+                index.append(i)
                 matrix += self.model.wv[_fragment]
             except Exception as e:
                 pass
 
         matrix = np.array(matrix)
+        index = np.array(index)
 
         f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
-        f5.create_dataset(record.id, data=matrix)
+        f5.create_dataset('vector', data=matrix)
+        f5.create_dataset('index', data=matrix)
 
         return True
 
