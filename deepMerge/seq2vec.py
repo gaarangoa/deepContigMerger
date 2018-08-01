@@ -20,16 +20,20 @@ class Quant():
         self.chunk = chunk
 
     def fetch_wv(self, sentence):
+        data = []
         for i in sentence:
             try:
-                yield self.model.wv[i]
+                data.append(self.model.wv[i])
             except Exception as e:
                 pass
+        return data
 
     def genome_to_doc(self, record):
         _genome = str(record.seq).upper()
         sentence = parse.genearte_one_genome(genome=_genome, k=self.kmer)
-        matrix = np.array([i for i in self.fetch_wv(sentence)])
+        matrix = np.array(self.fetch_wv(sentence))
+
+        print(matrix.shape)
 
         f5 = h5py.File(self.output_dir + '/' + record.id +
                        '-' + str(int(time.time())) + '.h5')
