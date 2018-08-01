@@ -35,7 +35,7 @@ class Quant():
             _fragment = [record.seq[i:i + self.kmer].upper()]
 
             try:
-                matrix.append(self.model.wv[_fragment])
+                matrix += self.model.wv[_fragment]
             except:
                 pass
 
