@@ -30,12 +30,18 @@ class Quant():
         return data
 
     def genome_to_doc(self, record):
+        #
+        f5 = h5py.File(self.output_dir + '/' + self.input_file.split('/')[-1] + '.h5', 'a')
+
+        try:
+            gr = f5.create_group(record.id) # this is the fasta file header id
+        except:
+            return False
 
         matrix = []
         index = []
         for i in range(0, len(record.seq)-self.kmer, self.kmer):
             _fragment = [record.seq[i:i + self.kmer].upper()]
-
             try:
                 index.append(i)
                 matrix.append(self.model.wv[_fragment])
@@ -45,9 +51,12 @@ class Quant():
         matrix = np.array(matrix)
         index = np.array(index)
 
-        f5 = h5py.File(self.output_dir + '/' + record.id + '.h5')
-        f5.create_dataset('vector', data=matrix)
-        f5.create_dataset('index', data=index)
+        if matrix.shape[0] > 0:
+            gr.create_dataset('word_vectors', data=matrix)
+            gr.create_dataset('index', data=index)
+            gr.create_dataset('info', data=np.string_(record.description))
+        else:
+            del f5[record.id]
 
         return True
 
@@ -61,9 +70,6 @@ class Quant():
         print('processing input file ...')
 
         pool = ThreadPool(processes=self.proc)
-        result = pool.map(self.genome_to_doc, fasta_file)
+        assert(pool.map(self.genome_to_doc, fasta_file))
 
-        # for i in pool.imap_unordered(self.genome_to_doc, fasta_file, chunksize=self.chunk):
-        #     assert(i)
-
-        # pool.close()
+        pool.close()
