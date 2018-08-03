@@ -40,13 +40,19 @@ class Quant():
 
         matrix = []
         index = []
+        document = []
         for i in range(0, len(record.seq)-self.kmer, self.kmer):
             _fragment = [record.seq[i:i + self.kmer].upper()]
             try:
                 index.append(i)
                 matrix.append(self.model.wv[_fragment])
+                document.append(_fragment)
             except Exception as e:
                 pass
+
+        # infer the word vector for the whole document
+        # TODO: need to test if using few kmers from the total is maybe a good option, so it would reduce the complexity of the computation?
+        vector = self.model.infer_vector(document)
 
         matrix = np.array(matrix)
         index = np.array(index)
@@ -55,6 +61,7 @@ class Quant():
             gr.create_dataset('word_vectors', data=matrix)
             gr.create_dataset('index', data=index)
             gr.create_dataset('info', data=np.string_(record.description))
+            gr.create_dataset('document_vector', data=vector)
         else:
             del f5[record.id]
 
