@@ -12,9 +12,6 @@ setup(
         'h5py',
         'tqdm'
     ],
-    package_data = {
-        'deepMerge': ['LICENSE', 'README.md']
-    },
     entry_points='''
         [console_scripts]
         nuc2vec=deepMerge.entry:cli

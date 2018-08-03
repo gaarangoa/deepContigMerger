@@ -42,11 +42,11 @@ class Quant():
         index = []
         document = []
         for i in range(0, len(record.seq)-self.kmer, self.kmer):
-            _fragment = [record.seq[i:i + self.kmer].upper()]
+            _fragment = record.seq[i:i + self.kmer].upper()
+            document.append(str(_fragment))
             try:
                 index.append(i)
-                matrix.append(self.model.wv[_fragment])
-                document.append(_fragment)
+                matrix.append(self.model.wv[ [_fragment] ])
             except Exception as e:
                 pass
 
@@ -57,12 +57,16 @@ class Quant():
         matrix = np.array(matrix)
         index = np.array(index)
 
+        gr.create_dataset('info', data=np.string_(record.description))
+
         if matrix.shape[0] > 0:
             gr.create_dataset('word_vectors', data=matrix)
             gr.create_dataset('index', data=index)
-            gr.create_dataset('info', data=np.string_(record.description))
+
+        if vector.shape[0] > 0:
             gr.create_dataset('document_vector', data=vector)
-        else:
+
+        if not f5[record.id]:
             del f5[record.id]
 
         return True

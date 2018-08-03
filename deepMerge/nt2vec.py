@@ -59,7 +59,7 @@ def build(genome_list={}, max_epochs=10, vec_size=300, alpha=0.025, model_filena
         model = Doc2Vec(vector_size=vec_size,
                         alpha=alpha,
                         min_alpha=0.025,
-                        min_count=5,
+                        min_count=1,
                         dm=1,
                         epochs=max_epochs,
                         cores=cores,
